@@ -1,0 +1,16 @@
+services:
+  vue-admin-panel:
+    build:
+      context: ./ 
+      dockerfile: Dockerfile
+    env_file:
+      - .env 
+    ports:
+      - "127.0.0.1:${PORT}:${PORT}"
+    restart: on-failure
+    networks:
+      - vueapp_network
+
+networks:
+  vueapp_network:
+    driver: bridge
