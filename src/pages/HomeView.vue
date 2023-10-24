@@ -1,6 +1,25 @@
 <template>
   <v-app id="inspire">
 
+    <v-app-bar
+    absolute
+    color="white"
+    elevate-on-scroll
+    scroll-target="#scrolling-techniques-7"
+    >
+
+    <v-app-bar-nav-icon></v-app-bar-nav-icon>
+
+    <v-toolbar-title>Title</v-toolbar-title>
+
+    <v-spacer></v-spacer>
+
+    <v-btn icon>
+      <v-icon>mdi-magnify</v-icon>
+    </v-btn>
+
+    </v-app-bar>
+
     <v-navigation-drawer v-model="drawer">
       <v-sheet
         color="grey-lighten-4"
@@ -44,14 +63,15 @@
                 <v-list-subheader :title="card"></v-list-subheader>
 
                 <template v-for="n in 6" :key="n">
-                  <v-list-item>
+                  <v-list-item
+                  class="d-flex justify-left"
+                  :title="`Message ${n}`"
+                  subtitle="Lorem ipsum dolor sit amet, consectetur adipisicing elit"
+                  >
                     <template v-slot:prepend>
                       <v-avatar color="grey-darken-1"></v-avatar>
                     </template>
 
-                    <v-list-item-title :title="`Message ${n}`"></v-list-item-title>
-
-                    <v-list-item-subtitle title="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil repellendus distinctio similique"></v-list-item-subtitle>
                   </v-list-item>
 
                   <v-divider

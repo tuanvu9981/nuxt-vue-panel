@@ -1,5 +1,7 @@
 services:
   vue-admin-panel:
+    container_name: vuejs_dashboard
+    image: vuejs_dashboard:latest
     build:
       context: ./ 
       dockerfile: Dockerfile
