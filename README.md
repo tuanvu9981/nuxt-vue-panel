@@ -51,3 +51,8 @@ $ docker-compose up -d --build
 ```
 $ docker build -t <container_name> .
 ```
+
+### Using macbook with VSCode　MacbookでのVSCodeを使用
+1. Search through the whole project プロジェクト全体を検索: Command + Shift + F
+2. Search in a specific file 特定ファイルで検索: Command + F
+
