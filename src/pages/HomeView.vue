@@ -1,7 +1,7 @@
 <template>
   <v-app id="inspire">
     <Sidebar :drawer="drawer"/>
-    <Header @handleDrawer="drawer = !drawer"/>
+    <Header @handleDrawer="handleDrawer" />
 
     <v-main>
       <v-container class="py-8 px-6" fluid>
@@ -44,7 +44,11 @@
       drawer: false,
     }),
 
-    methods: {}
+    methods: {
+      handleDrawer(){
+        this.drawer = !this.drawer;
+      }
+    }
 
   }
 </script>
