@@ -1,10 +1,20 @@
 <template>
-  <nav>
+  <!-- <nav>
     <router-link to="/">Home</router-link> |
     <router-link to="/about">About</router-link>
   </nav>
-  <router-view/>
+  <router-view/> -->
+  <HomeView />
 </template>
+
+<script>
+import HomeView from './pages/HomeView.vue';
+export default {
+  name: "App",
+  components: {HomeView}
+}
+
+</script>
 
 <style>
 #app {
