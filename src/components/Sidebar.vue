@@ -1,6 +1,6 @@
 <template>
     <v-navigation-drawer v-if="drawer" app>
-        <v-img height="140" class="pa-4" src="https://preview.pixlr.com/images/800wm/1439/2/1439104804.jpg">
+        <v-img height="140" class="pa-4 mt-4" src="https://preview.pixlr.com/images/800wm/1439/2/1439104804.jpg">
             <div class="text-center">
                 <v-avatar class="mb-4" color="grey darken-1" size="64">
                     <v-img aspect-ratio="30"
@@ -10,16 +10,16 @@
             </div>
         </v-img>
 
-        <v-divider></v-divider>
+        <!-- <v-divider></v-divider> -->
 
-        <v-list>
+        <v-list class="ml-4">
             <v-list-item v-for="[icon, text] in links" :key="icon" link>
 
                 <template v-slot:prepend>
                     <v-icon :icon="icon"></v-icon>
                 </template>
 
-                <v-list-item-content v-text="text"></v-list-item-content>
+                <v-list-item-content>{{ text }}</v-list-item-content>
             </v-list-item>
         </v-list>
     </v-navigation-drawer>
