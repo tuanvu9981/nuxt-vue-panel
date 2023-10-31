@@ -29,17 +29,19 @@
 export default {
     name: "Sidebar",
     props: ["drawer"],
-    data() {
+    setup() {
+        const links = [
+            ['mdi-microsoft-windows', 'ダッシュボード'],
+            ['mdi-account', 'プロフィール'],
+            ['mdi-clipboard-list-outline', '製品'],
+            ['mdi-card-account-details-outline', '注文'],
+            ['mdi-cog', 'システム設定'],
+        ]
+
         return {
-            links: [
-                ['mdi-microsoft-windows', 'ダッシュボード'],
-                ['mdi-account', 'プロフィール'],
-                ['mdi-clipboard-list-outline', '製品'],
-                ['mdi-card-account-details-outline', '注文'],
-                ['mdi-cog', 'システム設定'],
-            ]
+            links,
         }
-    }
+    },
 }
 </script>
 

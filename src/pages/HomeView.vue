@@ -1,8 +1,13 @@
 <template>
   <v-app id="inspire">
-    <Sidebar :drawer="drawer"/>
+
+    <!-- Sidebar -->
+    <Sidebar :drawer="drawer" />
+
+    <!-- Header -->
     <Header @handleDrawer="handleDrawer" />
 
+    <!-- Dashboard -->
     <v-main>
       <v-container class="py-8 px-6" fluid>
         <v-row>
@@ -10,19 +15,16 @@
             <v-card>
               <v-list lines="two">
                 <v-list-subheader :title="card"></v-list-subheader>
-                  <template v-for="n in 6" :key="n">
-                    <v-list-item
-                      class="d-flex justify-left"
-                      :title="`Message ${n}`"
-                      subtitle="Lorem ipsum dolor sit amet, consectetur adipisicing elit"
-                    >
-                      <template v-slot:prepend>
-                        <v-avatar color="grey-darken-1"></v-avatar>
-                      </template>
-                    </v-list-item>
+                <template v-for="n in 6" :key="n">
+                  <v-list-item class="d-flex justify-left" :title="`Message ${n}`"
+                    subtitle="Lorem ipsum dolor sit amet, consectetur adipisicing elit">
+                    <template v-slot:prepend>
+                      <v-avatar color="grey-darken-1"></v-avatar>
+                    </template>
+                  </v-list-item>
 
-                    <v-divider v-if="n !== 6" :key="`divider-${n}`" inset></v-divider>
-                  </template>
+                  <v-divider v-if="n !== 6" :key="`divider-${n}`" inset></v-divider>
+                </template>
               </v-list>
             </v-card>
           </v-col>
@@ -33,22 +35,27 @@
 </template>
 
 <script>
-  import Header from '../components/Header.vue';
-  import Sidebar from '../components/Sidebar.vue';
-  export default {
-    components: {Sidebar, Header},
-    name: "HomeView",
+import { ref } from 'vue';
+import Header from '../components/Header.vue';
+import Sidebar from '../components/Sidebar.vue';
+export default {
+  components: { Sidebar, Header },
+  name: "HomeView",
+  setup() {
 
-    data: () => ({
-      cards: ['Today', 'Yesterday'],
-      drawer: false,
-    }),
+    const drawer = ref(true);
+    const cards = ['Today', 'Yesterday'];
 
-    methods: {
-      handleDrawer(){
-        this.drawer = !this.drawer;
-      }
+    const handleDrawer = () => {
+      drawer.value = !drawer.value;
     }
 
+    return {
+      handleDrawer,
+      drawer,
+      cards,
+    }
   }
+
+}
 </script>
