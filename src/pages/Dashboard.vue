@@ -73,9 +73,13 @@
         </v-row>
 
         <v-row>
+            <div class="table-caption">Data table</div>
             <v-col lg="12">
-                <v-data-table :items-per-page="itemsPerPage" :headers="headers"
-                    :items="desserts" item-value="name" class="elevation-1">
+                <v-data-table :items-per-page="itemsPerPage" :headers="headers" :items="desserts" item-value="name"
+                    class="elevation-1">
+                    <template #header>
+                        <caption class="d-sr-only">Ice Cream Flavors</caption>
+                    </template>
                 </v-data-table>
             </v-col>
         </v-row>
@@ -202,4 +206,13 @@ export default {
 }
 </script>
 
-<style></style>
+<style scoped>
+.table-caption {
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-size: x-large;
+}
+</style>
