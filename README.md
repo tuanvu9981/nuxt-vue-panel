@@ -56,3 +56,23 @@ $ docker build -t <container_name> .
 1. Search through the whole project プロジェクト全体を検索: Command + Shift + F
 2. Search in a specific file 特定ファイルで検索: Command + F
 
+### Tables in Vuejs
+1. You need to import these components into plugin before using
+```
+import {
+  VDataTable,
+  VDataTableServer,
+  VDataTableVirtual,
+} from "vuetify/labs/VDataTable";
+
+export default createVuetify({
+  components: {
+    VDataTable,
+    VDataTableServer,
+    VDataTableVirtual,
+  },
+})
+```
+
+2. October 31st, attributes **caption** of **<v-table-data>** was removed. You need to use another css class to custom 
+
