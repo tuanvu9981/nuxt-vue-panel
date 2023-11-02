@@ -76,3 +76,5 @@ export default createVuetify({
 
 2. October 31st, attributes **caption** of **<v-table-data>** was removed. You need to use another css class to custom 
 
+### Automatically deploy to firebase hosting
+- Reference: [Firebase hosting deploy](https://medium.com/@mrjohnkilonzi/how-to-deploy-your-vuejs-using-github-actions-on-firebase-hosting-a667aabd88f7)
