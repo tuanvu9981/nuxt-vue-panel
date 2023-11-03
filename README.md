@@ -78,3 +78,36 @@ export default createVuetify({
 
 ### Automatically deploy to firebase hosting
 - Reference: [Firebase hosting deploy](https://medium.com/@mrjohnkilonzi/how-to-deploy-your-vuejs-using-github-actions-on-firebase-hosting-a667aabd88f7)
+
+3. Deploy your app to Firebase directly (**manually**)
+- Install firebase with npm 
+```
+$ npm install firebase
+```
+
+- Install firebase cli 
+```
+$ npm install -g firebase-tools
+```
+
+- Deploy your code to firebase hosting
+  - Sign in to google
+  ```
+  $ firebase login
+  ```
+
+  - Initialize your project
+  ```
+  $ firebase init
+  ```
+
+  - Deploy your web app to firebase
+  ```
+  $ firebase deploy
+  ```
+* Note: **npm i -g <package_name>** is a command to install a global package/tool
+
+4. Create secret value in github
+- References: [Github secret value](https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions)
+- Description: Github repo > Settings > Click on **New repository secret** > Input new secret and save.
+
