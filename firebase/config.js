@@ -10,7 +10,7 @@ const firebaseConfig = {
   projectId: "vuejs-admin-panel-13efd",
   storageBucket: "vuejs-admin-panel-13efd.appspot.com",
   messagingSenderId: process.env.FIREBASE_MESSAGE_SENDER_ID,
-  appId: process.env.FIREBASE_APP_ID,
+  appId: "1:414984117908:web:5032d11b3719afe5c21e81",
 };
 
 // Initialize Firebase
