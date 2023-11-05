@@ -76,3 +76,86 @@ export default createVuetify({
 
 2. October 31st, attributes **caption** of **<v-table-data>** was removed. You need to use another css class to custom 
 
+### Automatically deploy to firebase hosting
+- Reference: [Firebase hosting deploy](https://medium.com/@mrjohnkilonzi/how-to-deploy-your-vuejs-using-github-actions-on-firebase-hosting-a667aabd88f7)
+
+3. Deploy your app to Firebase directly (**manually**)
+- Install firebase with npm 
+```
+$ npm install firebase
+```
+
+- Install firebase cli 
+```
+$ npm install -g firebase-tools
+```
+
+- Deploy your code to firebase hosting
+  - **(1st-compulsory command): Sign in to google** 
+  ```
+  $ firebase login
+  ```
+
+  - **(2nd-compulsory command): Initialize your project at local**
+  ```
+  $ firebase init
+  ```
+
+  - **(3rd-compulsory command): Initialize hosting by answering questions in terminal** 
+  ```
+  $ firebase init hosting
+  ```
+  - After **firebase init**, firebase can select projects in **logged account**
+  - We will select one of **existing projects** 
+  - Then, authorize Firebase to **access Github repositories**. In this case, Firebase will have the right to create **FIREBASE_TOKEN** in **vuejs-admin-panel** repository's secret. (used in workflow github-action)
+  - Firebase CLI will automatically create 2 files: **firebase.json** and **.firebaserc**
+  - Firebase ask which command line should be execute when merging, then Firebase also helps us to automatically create github action yaml file to deploy.  
+
+  - Deploy your web app to firebase (manually)
+  ```
+  $ firebase deploy
+  ```
+* Note: **npm i -g <package_name>** is a command to install a global package/tool
+
+4. Create secret value in github
+- References: [Github secret value](https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions)
+- Description: Github repo > Settings > Click on **New repository secret** > Input new secret and save.
+
+5. Firebase commands.
+- **References**: 
+  - [Firebase Login Command](https://stackoverflow.com/questions/33916448/how-to-change-firebase-user-login-identity-from-command-line-cli)
+  - 
+
+- **The most-used commands**:
+  - Check version of firebase:
+  ```
+  $ firebase --version
+  ```
+
+  - First time login, then a new window in default browser will be opened automatically. You need to allow Firebase-cli to access your project (images in **images/firebase** folder)
+  ```
+  $ firebase login
+  ```
+
+  - If you want to add new firebase account, use the below command (the authentication and authorization process will be the same as first time login)
+  ```
+  $ firebase login:add <new_email>
+  ``` 
+
+  - Check list of logged in accounts
+  ```
+  $ firebase login:list
+  ```
+
+  - Switch from an account to another account
+  ```
+  $ firebase login:use <new_account>
+  ```
+
+  - Or if you cant switch, use this below command (new URL in browser will be automatically opened). Wait until **✔  Success! Logged in as <new_email>** appear
+  ```
+  $ firebase login --reauth
+  ```
+
+### Firebase functions
+- Reference: [Hosting setup and authorization](https://qiita.com/zono345/items/27744ef00b97b0cd8886)
