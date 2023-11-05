@@ -33,15 +33,13 @@ jobs:
         env:
           FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
           FIREBASE_MESSAGE_SENDER_ID: ${{ secrets.FIREBASE_MESSAGE_SENDER_ID }}
-        
-      - run: cd dist && ls
 
-      # 5. archive production artifact
-      - name: archive production artifact
-        uses: actions/upload-artifact@master
-        with: 
-          name: dist
-          path: dist
+      # # 5. archive production artifact
+      # - name: archive production artifact
+      #   uses: actions/upload-artifact@master
+      #   with: 
+      #     name: dist
+      #     path: dist
 
 
   deploy-admin-panel:
@@ -53,12 +51,12 @@ jobs:
       - name: copy code from repo to virtual machine
         uses: actions/checkout@v3
 
-      # 2. download artifact
-      - name: download artifact
-        uses: actions/download-artifact@master
-        with: 
-          name: dist
-          path: dist
+      # # 2. download artifact
+      # - name: download artifact
+      #   uses: actions/download-artifact@master
+      #   with: 
+      #     name: dist
+      #     path: dist
 
       # 3. deploy to firebase
       - name: deploy to firebase
