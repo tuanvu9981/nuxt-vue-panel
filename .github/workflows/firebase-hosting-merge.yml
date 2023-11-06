@@ -34,8 +34,6 @@ jobs:
           FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
           FIREBASE_MESSAGE_SENDER_ID: ${{ secrets.FIREBASE_MESSAGE_SENDER_ID }}
 
-      - run: ls
-      - run: cd dist & ls
       # 5. deploy to firebase
       - name: deploy to firebase
         uses: w9jds/firebase-action@master
