@@ -1,7 +1,7 @@
 services:
-  vue-admin-panel:
-    container_name: vuejs_dashboard
-    image: vuejs_dashboard:latest
+  nuxt-panel:
+    container_name: nuxt-panel
+    image: nuxt-panel:latest
     build:
       context: ./ 
       dockerfile: Dockerfile
@@ -11,8 +11,8 @@ services:
       - "127.0.0.1:${PORT}:${PORT}"
     restart: on-failure
     networks:
-      - vueapp_network
+      - nuxtapp_network
 
 networks:
-  vueapp_network:
+  nuxtapp_network:
     driver: bridge
