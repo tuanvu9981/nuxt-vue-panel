@@ -1,0 +1,18 @@
+# The following folders will be ignored in docker
+
+# Build dependencies
+node_modules
+dist
+coverage
+
+# versioning
+.git
+.gitignore
+.dockerignore
+
+# environment
+
+# not required for production mode
+README.md
+.eslintrc.json
+.prettierrc
