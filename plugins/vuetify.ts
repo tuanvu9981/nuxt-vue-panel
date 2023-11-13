@@ -13,6 +13,7 @@ import {
 
 export default defineNuxtPlugin((app) => {
   const vuetify = createVuetify({
+    ssr: true,
     components: {
       ...components,
       VDataTable,
