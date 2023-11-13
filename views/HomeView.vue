@@ -28,7 +28,7 @@
               </v-list>
             </v-card>
           </v-col> -->
-
+          <Dashboard/>
         </v-row>
       </v-container>
     </v-main>
@@ -39,8 +39,10 @@
 import { ref } from 'vue';
 import Header from '../components/Header.vue';
 import Sidebar from '../components/Sidebar.vue';
+import Dashboard from './Dashboard.vue';
+
 export default {
-  components: { Sidebar, Header },
+  components: { Sidebar, Header, Dashboard },
   name: "HomeView",
   setup() {
 
