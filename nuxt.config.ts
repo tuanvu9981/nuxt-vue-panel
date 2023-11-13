@@ -18,6 +18,9 @@ export default defineNuxtConfig({
     },
     //...
   ],
+  nitro: {
+    preset: "firebase",
+  },
   vite: {
     vue: {
       template: {

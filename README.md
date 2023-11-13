@@ -158,6 +158,28 @@ $ npm install -g firebase-tools
   ```
   $ firebase login --reauth
   ```
+### Firebase Hosting
+1. **firebase.json** with pure Vuejs hosting deploy
+```
+{
+  "hosting": {
+    "public": "dist",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}
+```
+- **npm run build** command will execute **vue-cli-service build** command, generate **dist** folder. There is an **index.html** file inside this **dist** folder, which was compiled after building.
+
 
 ### Firebase functions
 - Reference: [Hosting setup and authorization](https://qiita.com/zono345/items/27744ef00b97b0cd8886)
