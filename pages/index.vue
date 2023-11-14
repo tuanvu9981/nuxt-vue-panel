@@ -39,7 +39,7 @@
 import { ref } from 'vue';
 import Header from '../components/Header.vue';
 import Sidebar from '../components/Sidebar.vue';
-import Dashboard from './Dashboard.vue';
+import Dashboard from '../components/Dashboard.vue';
 
 export default {
   components: { Sidebar, Header, Dashboard },

@@ -261,4 +261,9 @@ export default defineNuxtPlugin((app) => {
 })
 ```
 
+### Deployment
+1. Using **nuxt generate**, we can generate a static html file, but ERROR kept appearing and [here's](https://nitro.unjs.io/deploy/providers/firebase) the reason why: 
+```
+Firebase tools use the engines.node version in package.json to determine which node version to use for your functions. Nitro automatically writes to the .output/server/package.json with configured Node.js version.
+```
 
