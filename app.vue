@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import HomeView from "./pages/HomeView.vue"
+import HomeView from "./pages/index.vue"
 
 export default {
   name: "App",
