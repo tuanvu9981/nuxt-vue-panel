@@ -1,6 +1,6 @@
 <template>
   <div>
-    <HomeView />
+    <NuxtPage/>
   </div>
 </template>
 

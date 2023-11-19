@@ -28,6 +28,7 @@
               </v-list>
             </v-card>
           </v-col> -->
+          <NuxtLink to="/sign-in">To Sign In</NuxtLink>
           <Dashboard/>
         </v-row>
       </v-container>
