@@ -1,10 +1,10 @@
 <template>
     <div class="dashboard">
-        <!-- Big title at the top of the page -->
-        <v-subheader class="d-flex justify-space-between align-center">
+        <!-- Dashboard and Button will lie at opposite side, center between -->
+        <!-- <p class="d-flex justify-space-between align-center">
             Dashboard
             <v-btn color="success" class="lg-rounded">View Orders</v-btn>
-        </v-subheader>
+        </p> -->
 
         <v-row class="my-2">
             <v-col lg="7" cols="12">

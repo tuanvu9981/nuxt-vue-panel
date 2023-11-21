@@ -1,17 +1,18 @@
 <template>
-  <v-app-bar app elevate-on-scroll elevation="3" color="white">
+  <v-app-bar>
     <!-- Drawer icon -->
     <v-app-bar-nav-icon @click="$emit('handleDrawer')"></v-app-bar-nav-icon>
     <!-- Drawer icon -->
-    <v-spacer />
+
+    <v-app-bar-title>飲食店</v-app-bar-title>
 
     <!-- Input Data -->
-    <v-col lg="6" cols="12">
+    <!-- <v-col lg="6" cols="12">
       <v-form>
         <v-text-field class="p-0 m-0 mt-6" variant="outlined" prepend-inner-icon="mdi-magnify" placeholder="検索" />
       </v-form>
     </v-col>
-    <v-spacer />
+    <v-spacer /> -->
     <!-- Input Data -->
 
     <!-- Bell-shaped icon with notification -->
