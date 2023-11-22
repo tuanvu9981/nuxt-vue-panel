@@ -2,7 +2,7 @@
   <v-app id="inspire">
     <Header @handleDrawer="handleDrawer"></Header>
 
-    <v-navigation-drawer v-model="drawer" temporary>
+    <v-navigation-drawer v-model="drawer" temporary width="250">
       <v-list class="ml-4">
         <v-list-item v-for="[icon, text] in links" :key="icon" link>
           <template v-slot:prepend>
@@ -54,11 +54,8 @@ export default {
     const drawer = ref(false);
     const cards = ['Today', 'Yesterday'];
     const links = [
-      ['mdi-microsoft-windows', 'ダッシュボード'],
-      ['mdi-account', 'プロフィール'],
-      ['mdi-clipboard-list-outline', '製品'],
-      ['mdi-card-account-details-outline', '注文'],
-      ['mdi-cog', 'システム設定'],
+      ['mdi-card-account-details-outline', '新しい注文'],
+      ['mdi-clipboard-list-outline', '統計'],
     ]
 
     const handleDrawer = () => {

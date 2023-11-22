@@ -70,10 +70,11 @@ export default {
   setup() {
     const arrowIcon = ref('mdi-menu-down')
     const items = [
-      { title: 'Click Me' },
-      { title: 'Click Me' },
-      { title: 'Click Me' },
-      { title: 'Click Me 2' },
+      { title: 'コードA123ZG 新しい注文が届きました！' },
+      { title: 'コードB81730 新しい注文が届きました！' },
+      { title: 'コードC81670 新しい注文が届きました！' },
+      { title: 'コードD81733 新しい注文が届きました！' },
+      { title: 'コードE81733 新しい注文が届きました！' },
     ]
 
     const menu = [

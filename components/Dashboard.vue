@@ -9,8 +9,8 @@
         <v-row class="my-2">
             <v-col lg="7" cols="12">
                 <!-- <v-alert dense text type="success" class="mb-3" variant="outlined"> -->
-                    <!-- success will display a green -->
-                    <!-- <strong>Login successfull: </strong>Good morning -->
+                <!-- success will display a green -->
+                <!-- <strong>Login successfull: </strong>Good morning -->
                 <!-- </v-alert> -->
 
                 <v-row>
@@ -19,7 +19,7 @@
                             <v-card-text class="d-flex justify-space-between align-center">
                                 <div class="d-flex flex-column">
                                     <strong class="text-h6">{{ activity.title }}</strong>
-                                    <p class="text-h7">{{ activity.row === 1 ? "今日中" : activity.name}}</p>
+                                    <p class="text-h7">{{ activity.row === 1 ? "今日中" : activity.name }}</p>
                                 </div>
 
                                 <v-avatar :color="activity.color" size="60">
@@ -36,26 +36,16 @@
             <v-col lg="5" cols="12">
                 <v-card elevation="5" class="rounded-lg" height="210">
                     <v-timeline side="end" align="start">
-                        <v-timeline-item dot-color="pink" size="small" class="mb-4">
-                            <div class="d-flex justify-space-between flex-grow-1">
-                                <strong>午前９時　営業開始</strong>
-                            </div>
+                        <v-timeline-item dot-color="pink" size="x-small">
+                            <strong>午前９時　営業開始</strong>
                         </v-timeline-item>
 
-                        <v-timeline-item dot-color="teal-lighten-3" size="small">
-                            <div class="d-flex">
-                                <div>
-                                    <strong>午後３時　休憩</strong>
-                                </div>
-                            </div>
+                        <v-timeline-item dot-color="teal-lighten-3" size="x-small">
+                            <strong>午後３時　休憩30分</strong>
                         </v-timeline-item>
 
-                        <v-timeline-item dot-color="teal-lighten-3" size="small">
-                            <div class="d-flex">
-                                <div>
-                                    <strong>午後９時　閉店</strong>
-                                </div>
-                            </div>
+                        <v-timeline-item dot-color="teal-lighten-3" size="x-small">
+                            <strong>午後９時　閉店</strong>
                         </v-timeline-item>
                     </v-timeline>
                 </v-card>
@@ -63,15 +53,10 @@
         </v-row>
 
         <v-row>
-            <div class="table-caption">Data table</div>
+            <div class="table-caption">注文履歴一覧</div>
             <v-col lg="12">
-                <v-data-table 
-                    :items-per-page="itemsPerPage" 
-                    :headers="headers" 
-                    :items="desserts" 
-                    item-value="name"
-                    class="elevation-1"
-                >
+                <v-data-table :items-per-page="itemsPerPage" :headers="headers" :items="desserts" item-value="name"
+                    class="elevation-1">
                     <template #header>
                         <caption class="d-sr-only">Ice Cream Flavors</caption>
                     </template>
