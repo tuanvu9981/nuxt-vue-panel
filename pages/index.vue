@@ -51,7 +51,7 @@ export default {
   name: "HomeView",
   setup() {
 
-    const drawer = ref(true);
+    const drawer = ref(false);
     const cards = ['Today', 'Yesterday'];
     const links = [
       ['mdi-microsoft-windows', 'ダッシュボード'],
