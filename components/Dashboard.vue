@@ -8,22 +8,24 @@
 
         <v-row class="my-2">
             <v-col lg="7" cols="12">
-                <v-alert dense text type="success" class="mb-3" variant="outlined">
-                    <!-- success will display a green -->
-                    <strong>Login successfull: </strong>Good morning
-                </v-alert>
+                <!-- <v-alert dense text type="success" class="mb-3" variant="outlined"> -->
+                <!-- success will display a green -->
+                <!-- <strong>Login successfull: </strong>Good morning -->
+                <!-- </v-alert> -->
 
                 <v-row>
                     <v-col lg="6" cols="12" v-for="(activity, index) in activities" :key="index">
-                        <v-card elevation="2" class="rounded-lg">
+                        <v-card elevation="5" class="rounded-lg">
                             <v-card-text class="d-flex justify-space-between align-center">
-                                <div class="">
-                                    <strong>{{ activity.title }}</strong>
-                                    <small>Last 2 week</small>
+                                <div class="d-flex flex-column">
+                                    <strong class="text-h6">{{ activity.title }}</strong>
+                                    <p class="text-h7">{{ activity.row === 1 ? "今日中" : activity.name }}</p>
                                 </div>
 
                                 <v-avatar :color="activity.color" size="60">
-                                    <span class="white-text">{{ activity.amounts }}</span>
+                                    <span class="white-text font-weight-bold text-h5 text-white">
+                                        {{ activity.amounts }}
+                                    </span>
                                 </v-avatar>
                             </v-card-text>
                         </v-card>
@@ -32,40 +34,18 @@
             </v-col>
 
             <v-col lg="5" cols="12">
-                <v-card>
-                    <v-card-title>Activities</v-card-title>
+                <v-card elevation="5" class="rounded-lg" height="210">
                     <v-timeline side="end" align="start">
-                        <v-timeline-item dot-color="pink" size="small">
-                            <div class="d-flex">
-                                <div>
-                                    <strong>New Icon</strong>
-                                    <div class="text-caption">
-                                        Mobile App
-                                    </div>
-                                </div>
-                            </div>
+                        <v-timeline-item dot-color="pink" size="x-small">
+                            <strong>午前９時　営業開始</strong>
                         </v-timeline-item>
 
-                        <v-timeline-item dot-color="teal-lighten-3" size="small">
-                            <div class="d-flex">
-                                <div>
-                                    <strong>Design Stand Up</strong>
-                                    <div class="text-caption mb-2">
-                                        Hangouts
-                                    </div>
-                                </div>
-                            </div>
+                        <v-timeline-item dot-color="teal-lighten-3" size="x-small">
+                            <strong>午後３時　休憩30分</strong>
                         </v-timeline-item>
 
-                        <v-timeline-item dot-color="teal-lighten-3" size="small">
-                            <div class="d-flex">
-                                <div>
-                                    <strong>Finish Home Screen</strong>
-                                    <div class="text-caption">
-                                        Web App
-                                    </div>
-                                </div>
-                            </div>
+                        <v-timeline-item dot-color="teal-lighten-3" size="x-small">
+                            <strong>午後９時　閉店</strong>
                         </v-timeline-item>
                     </v-timeline>
                 </v-card>
@@ -73,7 +53,7 @@
         </v-row>
 
         <v-row>
-            <div class="table-caption">Data table</div>
+            <div class="table-caption">注文履歴一覧</div>
             <v-col lg="12">
                 <v-data-table :items-per-page="itemsPerPage" :headers="headers" :items="desserts" item-value="name"
                     class="elevation-1">
@@ -91,10 +71,10 @@ export default {
     name: "Dashboard",
     setup() {
         const activities = [
-            { title: "Total Products ", color: "red", amounts: 4545 },
-            { title: "Total Categories ", color: "purple", amounts: 23 },
-            { title: "Total Orders ", color: "indigo", amounts: 4545 },
-            { title: "Pending Products ", color: "light-blue", amounts: 4545 },
+            { title: "注文済み回数", color: "blue lighten-3", amounts: 25, row: 1 },
+            { title: "処理中の注文数", color: "orange", amounts: 4, row: 1 },
+            { title: "一番売れもの ", color: "green", amounts: 20, row: 2, name: "ハンバーガー" },
+            { title: "あまり売れないもの ", color: "red", amounts: 1, row: 2, name: "コカコラ" },
         ]
 
         const itemsPerPage = 5;
