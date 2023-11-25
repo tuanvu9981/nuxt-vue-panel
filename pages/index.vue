@@ -4,7 +4,7 @@
 
     <v-navigation-drawer v-model="drawer" temporary width="250">
       <v-list class="ml-4">
-        <v-list-item v-for="[icon, text] in links" :key="icon" link>
+        <v-list-item v-for="[icon, text, link] in links" :key="icon" link :to="link">
           <template v-slot:prepend>
             <v-icon :icon="icon"></v-icon>
           </template>
@@ -54,8 +54,8 @@ export default {
     const drawer = ref(false);
     const cards = ['Today', 'Yesterday'];
     const links = [
-      ['mdi-card-account-details-outline', '新しい注文'],
-      ['mdi-clipboard-list-outline', '統計'],
+      ['mdi-card-account-details-outline', '新しい注文', '/new-order'],
+      ['mdi-clipboard-list-outline', '統計', '/statistic'],
     ]
 
     const handleDrawer = () => {

@@ -178,6 +178,28 @@ $ npm install -g firebase-tools
   }
 }
 ```
+
+2. with nuxtjs 
+```
+{
+  "functions": {
+    "source": ".output/server"
+  },
+  "hosting": [
+    {
+      "site": "vuejs-admin-panel-13efd",
+      "public": ".output/public",
+      "cleanUrls": true,
+      "rewrites": [
+        {
+          "source": "**",
+          "function": "server"
+        }
+      ]
+    }
+  ]
+}
+```
 - **npm run build** command will execute **vue-cli-service build** command, generate **dist** folder. There is an **index.html** file inside this **dist** folder, which was compiled after building.
 
 
