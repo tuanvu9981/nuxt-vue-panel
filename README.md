@@ -179,7 +179,7 @@ $ npm install -g firebase-tools
 }
 ```
 
-2. with nuxtjs 
+2. with nuxtjs (using **npm run build**)
 ```
 {
   "functions": {
@@ -198,6 +198,26 @@ $ npm install -g firebase-tools
       ]
     }
   ]
+}
+```
+
+3. with nuxtjs (using **npm run generate**)
+```
+{
+  "hosting": {
+    "public": ".output/public",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
 }
 ```
 - **npm run build** command will execute **vue-cli-service build** command, generate **dist** folder. There is an **index.html** file inside this **dist** folder, which was compiled after building.
