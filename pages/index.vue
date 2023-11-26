@@ -43,6 +43,7 @@
 
 <script>
 import { ref } from 'vue';
+import { links } from '~/utils/common/constant';
 import Header from '../components/Header.vue';
 import Dashboard from '../components/Dashboard.vue';
 
@@ -52,11 +53,6 @@ export default {
   setup() {
 
     const drawer = ref(false);
-    const cards = ['Today', 'Yesterday'];
-    const links = [
-      ['mdi-card-account-details-outline', '新しい注文', '/new-order'],
-      ['mdi-clipboard-list-outline', '統計', '/statistic'],
-    ]
 
     const handleDrawer = () => {
       drawer.value = !drawer.value;
@@ -65,7 +61,6 @@ export default {
     return {
       handleDrawer,
       drawer,
-      cards,
       links,
     }
   }
