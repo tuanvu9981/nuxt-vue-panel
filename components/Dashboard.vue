@@ -91,6 +91,7 @@ export default {
             { title: '取引金額 (円)', align: 'start', key: 'transaction_number' },
             { title: '支払い形式', align: 'start', key: 'transfer_type' },
             { title: '日時', align: 'start', key: 'order_date' },
+            { title: '状態', align: 'start', key: 'status' },
         ];
 
         const orders = [
@@ -101,6 +102,7 @@ export default {
                 transaction_number: 4560,
                 transfer_type: '現金',
                 order_date: '2023-09-24',
+                status: 'latest',
             },
             {
                 name: 'ハンバーガー',
@@ -109,6 +111,7 @@ export default {
                 transaction_number: 4560,
                 transfer_type: '現金',
                 order_date: '2023-09-24',
+                status: 'normal',
             },
             {
                 name: 'ハンバーガー',
@@ -117,6 +120,7 @@ export default {
                 transaction_number: 4560,
                 transfer_type: '現金',
                 order_date: '2023-09-24',
+                status: 'normal',
             },
             {
                 name: 'ハンバーガー',
@@ -125,6 +129,7 @@ export default {
                 transaction_number: 4560,
                 transfer_type: '現金',
                 order_date: '2023-09-24',
+                status: 'normal',
             },
             {
                 name: 'ハンバーガー',
@@ -133,6 +138,7 @@ export default {
                 transaction_number: 4560,
                 transfer_type: '現金',
                 order_date: '2023-09-24',
+                status: 'normal',
             },
             {
                 name: 'ハンバーガー',
@@ -141,6 +147,7 @@ export default {
                 transaction_number: 4560,
                 transfer_type: '現金',
                 order_date: '2023-09-24',
+                status: 'normal',
             },
             {
                 name: 'ハンバーガー',
@@ -149,6 +156,7 @@ export default {
                 transaction_number: 4560,
                 transfer_type: '現金',
                 order_date: '2023-09-24',
+                status: 'normal',
             },
             {
                 name: 'ハンバーガー',
@@ -157,6 +165,7 @@ export default {
                 transaction_number: 4560,
                 transfer_type: '現金',
                 order_date: '2023-09-24',
+                status: 'normal',
             },
         ];
 
