@@ -1,7 +1,6 @@
 import type { Timestamp } from "firebase/firestore";
 
 export const convertFBTimeStamp = (date:Timestamp) => {
-    console.log(date);
     const seconds = date.seconds;
     const nanoseconds = date.nanoseconds;
 
