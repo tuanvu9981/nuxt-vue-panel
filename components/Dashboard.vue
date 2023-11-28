@@ -62,6 +62,14 @@
                     item-value="name"
                     class="elevation-1"
                 >
+                    <template v-slot:item.status="{ value }">
+                        <v-chip :color="getStatusColor(value)">
+                            {{ value }}
+                        </v-chip>
+                    </template>
+                    <template v-slot:item.transfer_type="{ value }">
+                        {{ value }} <v-icon :color="getIconByValue(value).color">{{getIconByValue(value).icon}}</v-icon>
+                    </template>
                 </v-data-table>
             </v-col>
         </v-row>
@@ -147,11 +155,19 @@ export default {
             isLoading.value = false;
         }
 
+        const getStatusColor = (status) => status === '最新注文' ? 'green' : 'blue';
+
+        const getIconByValue = (value) => {
+            if (value === '現金') return {icon: 'mdi-cash-usd', color: 'green-lighten-2'};
+            else if (value === 'Paypay') return {icon: 'mdi-cellphone-iphone', color: 'red-lighten-2'};
+            else return {icon: 'mdi-cards', color: 'orange-lighten-2'};
+        }
+        
         return {
             activities,
             itemsPerPage,
             headers,
-            initData,
+            initData, getStatusColor, getIconByValue,
             transactions,
             isLoading,
         }
@@ -170,7 +186,7 @@ export default {
 }
 
 .loading{
-    margin: auto;
+    margin: 0 auto;
     padding-top: 20%;
 }
 </style>

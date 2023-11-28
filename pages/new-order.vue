@@ -1,5 +1,5 @@
 <template>
-    <v-app id="inspire">
+    <v-app id="inspire" v-show="!isLoading">
         <Header @handleDrawer="handleDrawer"></Header>
 
         <v-navigation-drawer v-model="drawer" temporary width="250">
@@ -96,15 +96,20 @@
             </v-container>
         </v-main>
     </v-app>
+
+    <div v-show="isLoading" class="loading">
+        <v-progress-circular color="blue" indeterminate>
+        </v-progress-circular>
+    </div>
 </template>
 
 <script>
 import { links } from '../utils/common/constant'
-import { 
-    getFirestore, 
-    addDoc, 
-    collection, 
-    serverTimestamp, 
+import {
+    getFirestore,
+    addDoc,
+    collection,
+    serverTimestamp,
 } from "firebase/firestore";
 import { app } from '../firebase/config';
 
@@ -159,6 +164,8 @@ export default {
             drawer.value = !drawer.value;
         }
 
+        const isLoading = ref(false);
+
         const add = async () => {
             if (number.value === 0) {
                 numberErr.value = true;
@@ -177,6 +184,7 @@ export default {
             }
 
             dialog.value = false;
+            isLoading.value = true;
             // add new value to firestore.
 
             const db = getFirestore(app);
@@ -207,7 +215,7 @@ export default {
             handleDrawer,
             add,
             getPriceByName,
-            drawer, links, dialog,
+            drawer, links, dialog, isLoading,
             number, numberErr, numberErrMsg,
             transfer, transferValue, transferErr, transferErrMsg,
             items, foodValue, foodErr, foodErrMsg
@@ -234,5 +242,11 @@ img {
 
 .value-item {
     margin-bottom: 10px;
+}
+
+.loading {
+    margin: 0 auto;
+    padding-top: 20%;
+    padding-left: 50%;
 }
 </style>
