@@ -86,7 +86,7 @@
                             <v-divider :thickness="2" class="border-opacity-50 mx-5" color="success"></v-divider>
 
                             <v-card-actions class="mx-15">
-                                <v-btn class="font-weight-bold text-h6" color="success" block @click="add" to="/">
+                                <v-btn class="font-weight-bold text-h6" color="success" block @click="add">
                                     支払い完了
                                 </v-btn>
                             </v-card-actions>
@@ -190,7 +190,9 @@ export default {
                     transfer_type: transferValue.value,
                     order_date: serverTimestamp(), // = new Date() 
                 });
-
+                setTimeout(() => {
+                    navigateTo('/');
+                }, 1000);
             } catch (e) {
                 console.log(e);
             }

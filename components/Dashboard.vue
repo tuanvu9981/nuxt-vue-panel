@@ -1,5 +1,5 @@
 <template>
-    <div class="dashboard">
+    <div v-show="!isLoading">
         <!-- Dashboard and Button will lie at opposite side, center between -->
         <!-- <p class="d-flex justify-space-between align-center">
             Dashboard
@@ -55,18 +55,35 @@
         <v-row>
             <div class="table-caption">注文履歴一覧</div>
             <v-col lg="12">
-                <v-data-table :items-per-page="itemsPerPage" :headers="headers" :items="orders" item-value="name"
-                    class="elevation-1">
-                    <template #header>
-                        <caption class="d-sr-only">Ice Cream Flavors</caption>
-                    </template>
+                <v-data-table 
+                    :items-per-page="itemsPerPage" 
+                    :headers="headers" 
+                    :items="transactions" 
+                    item-value="name"
+                    class="elevation-1"
+                >
                 </v-data-table>
             </v-col>
         </v-row>
     </div>
+
+    <div v-show="isLoading" class="loading">
+        <v-progress-circular color="blue" indeterminate>
+        </v-progress-circular>
+    </div>
 </template>
 
 <script>
+import { 
+    getFirestore, 
+    getDocs,
+    orderBy,
+    collection, 
+    query,
+} from "firebase/firestore";
+import { app } from '../firebase/config';
+import {convertFBTimeStamp} from '../utils/functions/datetime';
+
 export default {
     name: "Dashboard",
     setup() {
@@ -78,6 +95,8 @@ export default {
         ]
 
         const itemsPerPage = 5;
+        const transactions = ref([]);
+        const isLoading = ref(false);
 
         const headers = [
             {
@@ -94,86 +113,47 @@ export default {
             { title: '状態', align: 'start', key: 'status' },
         ];
 
-        const orders = [
-            {
-                name: 'ハンバーガー',
-                price: 760,
-                quantity: 6,
-                transaction_number: 4560,
-                transfer_type: '現金',
-                order_date: '2023-09-24',
-                status: 'latest',
-            },
-            {
-                name: 'ハンバーガー',
-                price: 760,
-                quantity: 6,
-                transaction_number: 4560,
-                transfer_type: '現金',
-                order_date: '2023-09-24',
-                status: 'normal',
-            },
-            {
-                name: 'ハンバーガー',
-                price: 760,
-                quantity: 6,
-                transaction_number: 4560,
-                transfer_type: '現金',
-                order_date: '2023-09-24',
-                status: 'normal',
-            },
-            {
-                name: 'ハンバーガー',
-                price: 760,
-                quantity: 6,
-                transaction_number: 4560,
-                transfer_type: '現金',
-                order_date: '2023-09-24',
-                status: 'normal',
-            },
-            {
-                name: 'ハンバーガー',
-                price: 760,
-                quantity: 6,
-                transaction_number: 4560,
-                transfer_type: '現金',
-                order_date: '2023-09-24',
-                status: 'normal',
-            },
-            {
-                name: 'ハンバーガー',
-                price: 760,
-                quantity: 6,
-                transaction_number: 4560,
-                transfer_type: '現金',
-                order_date: '2023-09-24',
-                status: 'normal',
-            },
-            {
-                name: 'ハンバーガー',
-                price: 760,
-                quantity: 6,
-                transaction_number: 4560,
-                transfer_type: '現金',
-                order_date: '2023-09-24',
-                status: 'normal',
-            },
-            {
-                name: 'ハンバーガー',
-                price: 760,
-                quantity: 6,
-                transaction_number: 4560,
-                transfer_type: '現金',
-                order_date: '2023-09-24',
-                status: 'normal',
-            },
-        ];
+        onMounted(() => {
+            initData();
+        })
+
+        const initData = async () => {
+            isLoading.value = true;
+            const db = getFirestore(app);
+            const transactionRef = collection(db, "transaction");
+            const q = query(transactionRef, orderBy('order_date', 'desc'));
+
+            const querySnapshot = await getDocs(q);
+            let counter = 0;
+            let status = 'normal';
+            querySnapshot.forEach((doc) => {
+                if (counter === 0){
+                    status = '最新注文';
+                } else {
+                    status = '一般'
+                }
+                transactions.value.push({
+                    id: doc.id,
+                    name: doc.data().name,
+                    price: doc.data().price,
+                    quantity: doc.data().quantity,
+                    transaction_number: doc.data().transaction_number,
+                    transfer_type: doc.data().transfer_type,
+                    order_date: convertFBTimeStamp(doc.data().order_date),
+                    status: status,
+                })
+                counter++;
+            });
+            isLoading.value = false;
+        }
 
         return {
             activities,
             itemsPerPage,
             headers,
-            orders
+            initData,
+            transactions,
+            isLoading,
         }
     }
 }
@@ -187,5 +167,10 @@ export default {
     margin-top: 5px;
     margin-bottom: 5px;
     font-size: x-large;
+}
+
+.loading{
+    margin: auto;
+    padding-top: 20%;
 }
 </style>
