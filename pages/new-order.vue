@@ -1,5 +1,5 @@
 <template>
-    <v-app id="inspire">
+    <v-app id="inspire" v-show="!isLoading">
         <Header @handleDrawer="handleDrawer"></Header>
 
         <v-navigation-drawer v-model="drawer" temporary width="250">
@@ -55,7 +55,7 @@
                 </v-row>
 
                 <v-container class="d-flex align-center justify-center">
-                    <v-btn color="success" width="180" class="text-h6" @click="add">
+                    <v-btn color="success" width="180" class="text-h6" @click="dialog = true">
                         情報確認
                     </v-btn>
 
@@ -86,7 +86,7 @@
                             <v-divider :thickness="2" class="border-opacity-50 mx-5" color="success"></v-divider>
 
                             <v-card-actions class="mx-15">
-                                <v-btn class="font-weight-bold text-h6" color="success" block @click="dialog = false" to="/">
+                                <v-btn class="font-weight-bold text-h6" color="success" block @click="add">
                                     支払い完了
                                 </v-btn>
                             </v-card-actions>
@@ -96,10 +96,23 @@
             </v-container>
         </v-main>
     </v-app>
+
+    <div v-show="isLoading" class="loading">
+        <v-progress-circular color="blue" indeterminate>
+        </v-progress-circular>
+    </div>
 </template>
 
 <script>
 import { links } from '../utils/common/constant'
+import {
+    getFirestore,
+    addDoc,
+    collection,
+    serverTimestamp,
+} from "firebase/firestore";
+import { app } from '../firebase/config';
+
 export default {
     name: "NewOrder",
     setup() {
@@ -151,7 +164,9 @@ export default {
             drawer.value = !drawer.value;
         }
 
-        const add = () => {
+        const isLoading = ref(false);
+
+        const add = async () => {
             if (number.value === 0) {
                 numberErr.value = true;
                 numberErrMsg.value = '数は０であってはなりません！';
@@ -168,8 +183,27 @@ export default {
                 return
             }
 
-            dialog.value = true;
+            dialog.value = false;
+            isLoading.value = true;
             // add new value to firestore.
+
+            const db = getFirestore(app);
+            const col = collection(db, "transaction");
+            try {
+                const docRef = await addDoc(col, {
+                    name: foodValue.value,
+                    price: getPriceByName(foodValue.value, items),
+                    quantity: number.value,
+                    transaction_number: getPriceByName(foodValue.value, items) * number.value,
+                    transfer_type: transferValue.value,
+                    order_date: serverTimestamp(), // = new Date() 
+                });
+                setTimeout(() => {
+                    navigateTo('/');
+                }, 1000);
+            } catch (e) {
+                console.log(e);
+            }
         }
 
         const getPriceByName = (name, items) => {
@@ -181,7 +215,7 @@ export default {
             handleDrawer,
             add,
             getPriceByName,
-            drawer, links, dialog,
+            drawer, links, dialog, isLoading,
             number, numberErr, numberErrMsg,
             transfer, transferValue, transferErr, transferErrMsg,
             items, foodValue, foodErr, foodErrMsg
@@ -208,5 +242,11 @@ img {
 
 .value-item {
     margin-bottom: 10px;
+}
+
+.loading {
+    margin: 0 auto;
+    padding-top: 20%;
+    padding-left: 50%;
 }
 </style>

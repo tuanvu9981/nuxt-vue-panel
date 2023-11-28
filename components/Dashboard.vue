@@ -1,5 +1,5 @@
 <template>
-    <div class="dashboard">
+    <div v-show="!isLoading">
         <!-- Dashboard and Button will lie at opposite side, center between -->
         <!-- <p class="d-flex justify-space-between align-center">
             Dashboard
@@ -55,29 +55,52 @@
         <v-row>
             <div class="table-caption">注文履歴一覧</div>
             <v-col lg="12">
-                <v-data-table :items-per-page="itemsPerPage" :headers="headers" :items="orders" item-value="name"
+                <v-data-table :items-per-page="itemsPerPage" :headers="headers" :items="transactions" item-value="name"
                     class="elevation-1">
-                    <template #header>
-                        <caption class="d-sr-only">Ice Cream Flavors</caption>
+                    <template v-slot:item.status="{ value }">
+                        <v-chip :color="getStatusColor(value)">
+                            {{ value }}
+                        </v-chip>
+                    </template>
+                    <template v-slot:item.transfer_type="{ value }">
+                        {{ value }} <v-icon :color="getIconByValue(value).color">{{ getIconByValue(value).icon }}</v-icon>
                     </template>
                 </v-data-table>
             </v-col>
         </v-row>
     </div>
+
+    <div v-show="isLoading" class="loading">
+        <v-progress-circular color="blue" indeterminate>
+        </v-progress-circular>
+    </div>
 </template>
 
 <script>
+import {
+    getFirestore,
+    getDocs,
+    orderBy,
+    collection,
+    query,
+} from "firebase/firestore";
+import { app } from '../firebase/config';
+import { convertFBTimeStamp } from '../utils/functions/datetime';
+import { getQuantity, getTodayQuantity } from '../utils/functions/statistic';
+
 export default {
     name: "Dashboard",
     setup() {
-        const activities = [
-            { title: "注文済み回数", color: "blue lighten-3", amounts: 25, row: 1 },
-            { title: "処理中の注文数", color: "orange", amounts: 4, row: 1 },
-            { title: "一番売れもの ", color: "green", amounts: 20, row: 2, name: "ハンバーガー" },
-            { title: "あまり売れないもの ", color: "red", amounts: 1, row: 2, name: "コカコラ" },
-        ]
+        const activities = ref([
+            { title: "注文済み回数", color: "blue lighten-3", row: 1, amounts: 0 },
+            { title: "処理中の注文数", color: "orange", row: 1, amounts: 0 },
+            { title: "一番売れもの ", color: "green", row: 2, amounts: 0, name: "" },
+            { title: "あまり売れないもの ", color: "red", row: 2, amounts: 0, name: "" },
+        ]);
 
         const itemsPerPage = 5;
+        const transactions = ref([]);
+        const isLoading = ref(false);
 
         const headers = [
             {
@@ -91,80 +114,63 @@ export default {
             { title: '取引金額 (円)', align: 'start', key: 'transaction_number' },
             { title: '支払い形式', align: 'start', key: 'transfer_type' },
             { title: '日時', align: 'start', key: 'order_date' },
+            { title: '状態', align: 'start', key: 'status' },
         ];
 
-        const orders = [
-            {
-                name: 'ハンバーガー',
-                price: 760,
-                quantity: 6,
-                transaction_number: 4560,
-                transfer_type: '現金',
-                order_date: '2023-09-24',
-            },
-            {
-                name: 'ハンバーガー',
-                price: 760,
-                quantity: 6,
-                transaction_number: 4560,
-                transfer_type: '現金',
-                order_date: '2023-09-24',
-            },
-            {
-                name: 'ハンバーガー',
-                price: 760,
-                quantity: 6,
-                transaction_number: 4560,
-                transfer_type: '現金',
-                order_date: '2023-09-24',
-            },
-            {
-                name: 'ハンバーガー',
-                price: 760,
-                quantity: 6,
-                transaction_number: 4560,
-                transfer_type: '現金',
-                order_date: '2023-09-24',
-            },
-            {
-                name: 'ハンバーガー',
-                price: 760,
-                quantity: 6,
-                transaction_number: 4560,
-                transfer_type: '現金',
-                order_date: '2023-09-24',
-            },
-            {
-                name: 'ハンバーガー',
-                price: 760,
-                quantity: 6,
-                transaction_number: 4560,
-                transfer_type: '現金',
-                order_date: '2023-09-24',
-            },
-            {
-                name: 'ハンバーガー',
-                price: 760,
-                quantity: 6,
-                transaction_number: 4560,
-                transfer_type: '現金',
-                order_date: '2023-09-24',
-            },
-            {
-                name: 'ハンバーガー',
-                price: 760,
-                quantity: 6,
-                transaction_number: 4560,
-                transfer_type: '現金',
-                order_date: '2023-09-24',
-            },
-        ];
+        onMounted(() => {
+            initData();
+        })
+
+        const initData = async () => {
+            isLoading.value = true;
+            const db = getFirestore(app);
+            const transactionRef = collection(db, "transaction");
+            const q = query(transactionRef, orderBy('order_date', 'desc'));
+
+            const querySnapshot = await getDocs(q);
+            let counter = 0, status = '一般';
+            querySnapshot.forEach((doc) => {
+                status = counter === 0 ? '最新注文' : '一般';
+                transactions.value.push({
+                    id: doc.id,
+                    name: doc.data().name,
+                    price: doc.data().price,
+                    quantity: doc.data().quantity,
+                    transaction_number: doc.data().transaction_number,
+                    transfer_type: doc.data().transfer_type,
+                    order_date: convertFBTimeStamp(doc.data().order_date),
+                    calculatedOrderDate: doc.data().order_date,
+                    status: status,
+                })
+                counter++;
+            });
+            const result = getQuantity(transactions.value);
+            const quantityToday = getTodayQuantity(transactions.value);
+            activities.value[2].name = result.maxQuantityItem.name;
+            activities.value[2].amounts = result.maxQuantityItem.quantity;
+            activities.value[3].name = result.minQuantityItem.name;
+            activities.value[3].amounts = result.minQuantityItem.quantity;
+            activities.value[0].amounts = quantityToday;
+            activities.value[1].amounts = quantityToday
+
+            isLoading.value = false;
+        }
+
+        const getStatusColor = (status) => status === '最新注文' ? 'green' : 'blue';
+
+        const getIconByValue = (value) => {
+            if (value === '現金') return { icon: 'mdi-cash-usd', color: 'green-lighten-2' };
+            else if (value === 'Paypay') return { icon: 'mdi-cellphone-iphone', color: 'red-lighten-2' };
+            else return { icon: 'mdi-cards', color: 'orange-lighten-2' };
+        }
 
         return {
             activities,
             itemsPerPage,
             headers,
-            orders
+            initData, getStatusColor, getIconByValue,
+            transactions,
+            isLoading,
         }
     }
 }
@@ -178,5 +184,10 @@ export default {
     margin-top: 5px;
     margin-bottom: 5px;
     font-size: x-large;
+}
+
+.loading {
+    margin: 0 auto;
+    padding-top: 20%;
 }
 </style>
