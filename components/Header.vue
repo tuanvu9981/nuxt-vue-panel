@@ -36,7 +36,7 @@
       <template v-slot:activator="{ props }">
         <v-btn color="black" stacked v-bind="props" @click="changeIcon">
           <!-- <v-badge dot bottom offset-y="20" offset-x="10" color="green"> -->
-          <v-list-item one-line :title="user.name" :prepend-avatar="user.avatar">
+          <v-list-item one-line :title="user.displayName" :prepend-avatar="user.photoURL">
             <template v-slot:append>
               <v-btn color="black" :icon="arrowIcon" variant="text"></v-btn>
             </template>
@@ -47,7 +47,7 @@
       </template>
 
       <v-list width="250" class="py-0">
-        <v-list-item lines="two" :title="user.name" :subtitle="user.status" :prepend-avatar="user.avatar">
+        <v-list-item lines="two" :title="user.displayName" :subtitle="user.email" :prepend-avatar="user.photoURL">
         </v-list-item>
         <v-divider thickness="2"></v-divider>
 
@@ -64,6 +64,7 @@
   
 <script>
 import { ref } from 'vue';
+import useUserData from '~/composables/states';
 export default {
   name: "Topbar",
 
@@ -84,11 +85,7 @@ export default {
       { title: 'ログアウト', icon: 'mdi-logout' },
     ]
 
-    const user = {
-      name: "Admin User",
-      status: "Logged In",
-      avatar: "https://firebasestorage.googleapis.com/v0/b/fir-getx-flutter-bd7d8.appspot.com/o/images%2FToyota-Glanza.jpg?alt=media&token=e2d81f57-4915-4e6c-99ed-7d2b006f8c80&_gl=1*1mg867y*_ga*MTk3MDI3OTYzMC4xNjc2OTc4MjMz*_ga_CW55HF8NVT*MTY5ODcxODIwMi4xNi4xLjE2OTg3MTgyNTIuMTAuMC4w"
-    }
+    const [user, setUser] = useUserData();
 
     const changeIcon = () => {
       arrowIcon.value = arrowIcon.value === "mdi-menu-down" ? "mdi-menu-up" : "mdi-menu-down";

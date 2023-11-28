@@ -158,7 +158,7 @@ $ npm install -g firebase-tools
   ```
   $ firebase login --reauth
   ```
-### Firebase Hosting
+### Firebase Hosting & Deployment
 1. **firebase.json** with pure Vuejs hosting deploy
 ```
 {
@@ -221,6 +221,11 @@ $ npm install -g firebase-tools
 }
 ```
 - **npm run build** command will execute **vue-cli-service build** command, generate **dist** folder. There is an **index.html** file inside this **dist** folder, which was compiled after building.
+
+- Using **nuxt generate**, we can generate a static html file, but ERROR kept appearing and [here's](https://nitro.unjs.io/deploy/providers/firebase) the reason why: 
+```
+Firebase tools use the engines.node version in package.json to determine which node version to use for your functions. Nitro automatically writes to the .output/server/package.json with configured Node.js version.
+```
 
 
 ### Firebase functions
@@ -303,9 +308,73 @@ export default defineNuxtPlugin((app) => {
 })
 ```
 
-### Deployment
-1. Using **nuxt generate**, we can generate a static html file, but ERROR kept appearing and [here's](https://nitro.unjs.io/deploy/providers/firebase) the reason why: 
+### Utilities
+1. Convert Firebase Timestamp to JavaScript DateTime with [StackOverFlow](https://stackoverflow.com/questions/52247445/how-do-i-convert-a-firestore-date-timestamp-to-a-js-date)
 ```
-Firebase tools use the engines.node version in package.json to determine which node version to use for your functions. Nitro automatically writes to the .output/server/package.json with configured Node.js version.
+let time = {
+  seconds: 1613748319,
+  nanoseconds: 47688698687,
+}
+
+const fireBaseTime = new Date(
+  time.seconds * 1000 + time.nanoseconds / 1000000,
+);
+const date = fireBaseTime.toDateString();
 ```
 
+2. Add images and text in a **v-select** at vuetify with [StackOverFlow](https://stackoverflow.com/questions/50531864/customizing-item-text-in-v-select)
+```
+<v-select :items="mylist" item-title="name" item-value="id">
+    <template #selection="{ item }">
+        <span><img :src="item.raw.image" />  {{item.raw.name}}</span>
+    </template>
+    <template #item="{ item, props }">
+        <v-list-item v-bind="props">
+            <template #title>
+                <span><img :src="item.raw.image" /> {{item.raw.name}}</span>
+            </template>
+        </v-list-item>
+    </template>
+</v-select>
+
+data () {
+    return {
+        mylist: [
+            {id:0, image:"pic1.png", name:"Entry1"},
+            {id:1, image:"pic2.png", name:"Entry2"},
+            {id:2, image:"pic3.png", name:"Entry3"},
+        ]
+    }
+}
+```
+
+3. Get document and extract data from Google Firestore with [StackOverflow](https://stackoverflow.com/questions/52100103/getting-all-documents-from-one-collection-in-firestore)
+```
+import { collection, getDocs } from "firebase/firestore";
+
+const querySnapshot = await getDocs(collection(db, "cities"));
+querySnapshot.forEach((doc) => {
+  // doc.data() is never undefined for query doc snapshots
+  console.log(doc.id, " => ", doc.data());
+});
+```
+
+```
+import { collection, Firestore, getDocs, Query, QueryDocumentSnapshot, QuerySnapshot } from 'firebase/firestore'
+
+const q: Query<any> = collection(db, 'videos')
+const querySnapshot: QuerySnapshot<IVideoProcessed> = await getDocs(q)
+const docs: QueryDocumentSnapshot<IVideoProcessed>[] = querySnapshot.docs
+const videos: IVideoProcessed[] = docs.map((doc: QueryDocumentSnapshot<IVideoProcessed>) => doc.data())
+```
+
+4. Sometimes, a collection may have a subcollection and path can be complicated. In that case, you need to care about **pathSegments** in a **Firestore document**. (Reference [StackOverflow](https://stackoverflow.com/questions/68987326/firestore-whats-the-pattern-for-adding-new-data-in-web-v9))
+
+### Vuetify CSS 
+1. Coloring a div with css classes, reference [here](https://v2.vuetifyjs.com/en/styles/colors/)
+
+2. Sizing a text, div, p, reference [here](https://vuetifyjs.com/en/styles/sizing/#height)
+
+3. Flex css class, reference [here](https://vuetifyjs.com/en/styles/flex/#enabling-flexbox)
+
+4. Typography classes, reference [here](https://vuetifyjs.com/en/styles/text-and-typography/#typography)
