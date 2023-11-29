@@ -30,6 +30,8 @@ import { ref } from 'vue';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
 import { app } from '../firebase/config';
 import { FirebaseError } from '@firebase/util'
+import useUserData from '../composables/states';
+import { DEFAULT_AVATAR } from "~/utils/common/constant";
 
 export default {
     name: "SignIn",
@@ -41,6 +43,7 @@ export default {
         const errorPw = ref(false);
         const errEmailMsg = ref('');
         const errPwMsg = ref('');
+        const [user, setUser] = useUserData();
 
         const signIn = async () => {
             if (email.value === '' || !email.value.includes('@')) {
@@ -54,8 +57,15 @@ export default {
             }
 
             try {
-                const auth = getAuth(app)
-                await signInWithEmailAndPassword(auth, email.value, password.value)
+                const auth = getAuth(app);
+                const result = await signInWithEmailAndPassword(auth, email.value, password.value);
+                const newEmail = result.user.email
+
+                setUser({ 
+                    displayName: !result.user.displayName ? newEmail.split('@')[0] : result.user.displayName, 
+                    email: result.user.email,
+                    photoURL: !result.user.photoURL ? DEFAULT_AVATAR : result.user.photoURL
+                });
                 await navigateTo('/')
             } catch (e) {
                 if (e instanceof FirebaseError) {
