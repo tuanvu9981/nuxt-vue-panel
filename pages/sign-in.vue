@@ -9,7 +9,7 @@
                 :error-messages="errEmailMsg"></v-text-field>
 
             <v-text-field class="mt-5" :append-inner-icon="visible ? 'mdi-eye' : 'mdi-eye-off'"
-                :type="visible ? 'text' : 'password'" @click:append="visible = !visible" v-model="password" label="パスワード"
+                :type="visible ? 'text' : 'password'" @click:append-inner="visible = !visible" v-model="password" label="パスワード"
                 variant="outlined" :error="errorPw" :error-messages="errPwMsg"></v-text-field>
 
             <p class="text-right font-weight-medium">
