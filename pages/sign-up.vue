@@ -9,7 +9,7 @@
                 :error-messages="errEmailMsg"></v-text-field>
 
             <v-text-field class="mt-5" :append-inner-icon="visible ? 'mdi-eye' : 'mdi-eye-off'"
-                :type="visible ? 'text' : 'password'" @click:append="visible = !visible" v-model="password" label="パスワード"
+                :type="visible ? 'text' : 'password'" @click:append-inner="visible = !visible" v-model="password" label="パスワード"
                 variant="outlined" :error="errorPw" :error-messages="errPwMsg"></v-text-field>
 
             <p class="text-right font-weight-medium">
@@ -47,6 +47,7 @@ import { ref } from 'vue';
 import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth'
 import { app } from '../firebase/config';
 import { FirebaseError } from '@firebase/util'
+import useUserData from '../composables/states';
 
 export default {
     name: "SignUp",
@@ -60,7 +61,8 @@ export default {
         const errEmailMsg = ref('');
         const errPwMsg = ref('');
         const errCheckbox = ref('');
-        const checked = ref(false)
+        const checked = ref(false);
+        const [user, setUser] = useUserData();
 
         const signUp = async () => {
             if (email.value === '' || !email.value.includes('@')) {
@@ -78,8 +80,13 @@ export default {
             }
             try {
                 const auth = getAuth(app);
-                const user = await createUserWithEmailAndPassword(auth, email.value, password.value)
-                // console.log(user);
+                const result = await createUserWithEmailAndPassword(auth, email.value, password.value)
+                const newEmail = result.user.email;
+                setUser({
+                    displayName: !result.user.displayName ? newEmail.split('@')[0] : result.user.displayName,
+                    email: result.user.email,
+                    photoURL: !result.user.photoURL ? DEFAULT_AVATAR : result.user.photoURL
+                });
                 await navigateTo('/')
             } catch (e) {
                 if (e instanceof FirebaseError) {
