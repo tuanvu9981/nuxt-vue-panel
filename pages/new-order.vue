@@ -55,7 +55,7 @@
                 </v-row>
 
                 <v-container class="d-flex align-center justify-center">
-                    <v-btn color="success" width="180" class="text-h6" @click="dialog = true">
+                    <v-btn color="success" width="180" class="text-h6" @click="confirmInfo">
                         情報確認
                     </v-btn>
 
@@ -166,7 +166,7 @@ export default {
 
         const isLoading = ref(false);
 
-        const add = async () => {
+        const confirmInfo = () => {
             if (number.value === 0) {
                 numberErr.value = true;
                 numberErrMsg.value = '数は０であってはなりません！';
@@ -182,7 +182,10 @@ export default {
                 }
                 return
             }
+            dialog.value = true;
+        }
 
+        const add = async () => {
             dialog.value = false;
             isLoading.value = true;
             // add new value to firestore.
@@ -214,7 +217,8 @@ export default {
         return {
             handleDrawer,
             add,
-            getPriceByName,
+            getPriceByName, 
+            confirmInfo,
             drawer, links, dialog, isLoading,
             number, numberErr, numberErrMsg,
             transfer, transferValue, transferErr, transferErrMsg,
