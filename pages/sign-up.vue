@@ -87,7 +87,7 @@ export default {
                     email: result.user.email,
                     photoURL: !result.user.photoURL ? DEFAULT_AVATAR : result.user.photoURL
                 });
-                await navigateTo('/')
+                await navigateTo('/sign-in');
             } catch (e) {
                 if (e instanceof FirebaseError) {
                     console.log(e)
