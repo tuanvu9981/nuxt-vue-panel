@@ -6,7 +6,7 @@ import "firebase/auth"
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: 'AIzaSyCLpLrl9fe4U69z5nG9P07C_2NYC6ceisw',
+  apiKey: process.env.FIREBASE_API_KEY,
   authDomain: "vuejs-admin-panel-13efd.firebaseapp.com",
   projectId: "vuejs-admin-panel-13efd",
   storageBucket: "vuejs-admin-panel-13efd.appspot.com",
