@@ -378,3 +378,47 @@ const videos: IVideoProcessed[] = docs.map((doc: QueryDocumentSnapshot<IVideoPro
 3. Flex css class, reference [here](https://vuetifyjs.com/en/styles/flex/#enabling-flexbox)
 
 4. Typography classes, reference [here](https://vuetifyjs.com/en/styles/text-and-typography/#typography)
+
+
+### Middleware (Nuxtjs Middleware)[https://nuxt.com/docs/api/utils/navigate-to]
+1. Activated every time route changes. 
+2. In this project, name the file with postfix **.global.ts** 
+3. Write as below **(to, from)**, and no need async - await
+```
+export default defineNuxtRouteMiddleware((to, from) => {
+  if (to.path !== '/search') {
+    // setting the redirect code to '301 Moved Permanently'
+    return navigateTo('/search', { redirectCode: 301 })
+  }
+})
+```
+
+### Shared States can be written in composables folders. 
+* References: 
+- (Nuxtjs composables)[https://nuxt.com/docs/getting-started/state-management]
+- (Nuxt Global states)[https://medium.com/@cybercoder.naj/handle-global-state-management-in-nuxt3-468e5b3e7901]
+1. In this project, we wrote a custom hook to extract data in a global range.
+```
+import type { User } from "~/types/user";
+import { DEFAULT_AVATAR } from "~/utils/common/constant";
+
+const useUserData = () => {
+    const userData = useState<User>('user', () => ({
+        displayName: '',
+        email: '',
+        photoURL: DEFAULT_AVATAR,
+    }));
+
+    const setUserData = (user: User) => {
+        userData.value = user
+    }
+    return [userData, setUserData];
+}
+export default useUserData
+```
+2. Then, we can extract data using this hook
+```
+<script>
+  const [user, setUser] = useUserData();
+</script>
+```

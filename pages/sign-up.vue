@@ -81,12 +81,14 @@ export default {
             try {
                 const auth = getAuth(app);
                 const result = await createUserWithEmailAndPassword(auth, email.value, password.value)
+                // console.log(result);
                 const newEmail = result.user.email;
                 setUser({
                     displayName: !result.user.displayName ? newEmail.split('@')[0] : result.user.displayName,
                     email: result.user.email,
                     photoURL: !result.user.photoURL ? DEFAULT_AVATAR : result.user.photoURL
                 });
+                // console.log(user);
                 await navigateTo('/sign-in');
             } catch (e) {
                 if (e instanceof FirebaseError) {
