@@ -84,9 +84,9 @@ import {
     collection,
     query,
 } from "firebase/firestore";
-import { app } from '../firebase/config';
 import { convertFBTimeStamp } from '../utils/functions/datetime';
 import { getQuantity, getTodayQuantity } from '../utils/functions/statistic';
+import useFirebaseApp from "~/composables/firebase.config";
 
 export default {
     name: "Dashboard",
@@ -123,6 +123,8 @@ export default {
 
         const initData = async () => {
             isLoading.value = true;
+            const runtimeConfig = useRuntimeConfig();
+            const app = useFirebaseApp(runtimeConfig);
             const db = getFirestore(app);
             const transactionRef = collection(db, "transaction");
             const q = query(transactionRef, orderBy('order_date', 'desc'));

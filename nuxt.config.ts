@@ -25,4 +25,10 @@ export default defineNuxtConfig({
       },
     },
   },
+  runtimeConfig: {
+    public: {
+      firebaseApiKey: process.env.FIREBASE_API_KEY,
+      firebaseMessageKey: process.env.FIREBASE_MESSAGE_SENDER_ID,
+    }    
+  }
 })

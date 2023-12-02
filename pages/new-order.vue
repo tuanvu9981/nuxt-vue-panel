@@ -111,7 +111,7 @@ import {
     collection,
     serverTimestamp,
 } from "firebase/firestore";
-import { app } from '../firebase/config';
+import useFirebaseApp from '../composables/firebase.config';
 
 export default {
     name: "NewOrder",
@@ -190,6 +190,8 @@ export default {
             isLoading.value = true;
             // add new value to firestore.
 
+            const runtimeConfig = useRuntimeConfig();
+            const app = useFirebaseApp(runtimeConfig);
             const db = getFirestore(app);
             const col = collection(db, "transaction");
             try {
