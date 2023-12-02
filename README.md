@@ -380,7 +380,7 @@ const videos: IVideoProcessed[] = docs.map((doc: QueryDocumentSnapshot<IVideoPro
 4. Typography classes, reference [here](https://vuetifyjs.com/en/styles/text-and-typography/#typography)
 
 
-### Middleware (Nuxtjs Middleware)[https://nuxt.com/docs/api/utils/navigate-to]
+### Middleware [Nuxtjs Middleware](https://nuxt.com/docs/api/utils/navigate-to)
 1. Activated every time route changes. 
 2. In this project, name the file with postfix **.global.ts** 
 3. Write as below **(to, from)**, and no need async - await
@@ -395,8 +395,8 @@ export default defineNuxtRouteMiddleware((to, from) => {
 
 ### Shared States can be written in composables folders. 
 * References: 
-- (Nuxtjs composables)[https://nuxt.com/docs/getting-started/state-management]
-- (Nuxt Global states)[https://medium.com/@cybercoder.naj/handle-global-state-management-in-nuxt3-468e5b3e7901]
+  - [Nuxtjs composables](https://nuxt.com/docs/getting-started/state-management)
+  - [Nuxt Global states](https://medium.com/@cybercoder.naj/handle-global-state-management-in-nuxt3-468e5b3e7901)
 1. In this project, we wrote a custom hook to extract data in a global range.
 ```
 import type { User } from "~/types/user";
@@ -421,4 +421,58 @@ export default useUserData
 <script>
   const [user, setUser] = useUserData();
 </script>
+```
+
+### Environment configuration
+* Refenrences: 
+  - [Nuxtjs configutation](https://nuxt.com/docs/guide/going-further/runtime-config)
+  - [Medium instruction](https://javokhirbekkhaydarov.medium.com/e-env-using-environment-variables-in-nuxt-3-options-api-168633d202a8)
+
+1. Configuration for server-side and client-side
+```
+export default defineNuxtConfig({
+  runtimeConfig: {
+    // The private keys which are only available within server-side
+    apiSecret: '123',
+
+    // Keys within public, will be also exposed to the client-side
+    public: {
+      apiBase: '/api'
+    }
+  }
+})
+```
+- Environmental variables exported in client-side and server-side **must be declared in public object**
+
+2. Then, write a customized hook to pass variable to firebase configuration (remember to import type RuntimeConfig from nuxt/schema)
+```
+const useFirebaseApp = (config: RuntimeConfig) => {
+    const firebaseConfig = {
+      apiKey: config.public.firebaseApiKey,
+      authDomain: "vuejs-admin-panel-13efd.firebaseapp.com",
+      projectId: "vuejs-admin-panel-13efd",
+      storageBucket: "vuejs-admin-panel-13efd.appspot.com",
+      messagingSenderId: config.public.firebaseMessageKey,
+      appId: "1:414984117908:web:5032d11b3719afe5c21e81",
+    };
+
+    return initializeApp(firebaseConfig);
+}
+
+export default useFirebaseApp;
+``` 
+
+3. In the page where you want to use firebase app to initialize **Firebase Authentication** or **Firebase Firestore Database**, you need to import app via **customized useFirebaseApp hook**. (Remember to import necessary function such as **createUserWithEmailAndPassword** from firebase)
+```
+const runtimeConfig = useRuntimeConfig();
+const app = useFirebaseApp(runtimeConfig);
+const db = getFirestore(app);
+const col = collection(db, "transaction");
+``` 
+
+```
+const runtimeConfig = useRuntimeConfig();
+const app = useFirebaseApp(runtimeConfig);
+const auth = getAuth(app);
+const result = await createUserWithEmailAndPassword(auth, email.value, password.value)
 ```
