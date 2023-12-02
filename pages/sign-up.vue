@@ -45,9 +45,9 @@
 <script>
 import { ref } from 'vue';
 import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth'
-import { app } from '../firebase/config';
 import { FirebaseError } from '@firebase/util'
 import useUserData from '../composables/states';
+import useFirebaseApp from '../composables/firebase.config';
 import { DEFAULT_AVATAR } from '~/utils/common/constant';
 
 export default {
@@ -80,6 +80,8 @@ export default {
                 return
             }
             try {
+                const runtimeConfig = useRuntimeConfig();
+                const app = useFirebaseApp(runtimeConfig);
                 const auth = getAuth(app);
                 const result = await createUserWithEmailAndPassword(auth, email.value, password.value)
                 const newEmail = result.user.email;
