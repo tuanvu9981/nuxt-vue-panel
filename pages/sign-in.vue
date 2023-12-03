@@ -18,7 +18,11 @@
 
             <v-container class="d-flex align-center justify-center">
                 <v-btn color="success" width="180" class="text-h6" @click="signIn">
-                    ログイン
+                    <div v-show="isWaiting">
+                        <v-progress-circular color="white" indeterminate size="22.5">
+                        </v-progress-circular>
+                    </div>
+                    <div v-show="!isWaiting">ログイン</div>
                 </v-btn>
             </v-container>
         </v-container>
@@ -44,6 +48,7 @@ export default {
         const errEmailMsg = ref('');
         const errPwMsg = ref('');
         const [user, setUser] = useUserData();
+        const isWaiting = ref(false);
 
         const signIn = async () => {
             if (email.value === '' || !email.value.includes('@')) {
@@ -53,9 +58,11 @@ export default {
                     errorEmail.value = true;
                     errPwMsg.value = 'パスワードは空です'
                 }
+                isWaiting.value = fasle;
                 return
             }
 
+            isWaiting.value = true;
             try {
                 const runtimeConfig = useRuntimeConfig();
                 const app = useFirebaseApp(runtimeConfig);
@@ -68,6 +75,7 @@ export default {
                     email: result.user.email,
                     photoURL: !result.user.photoURL ? DEFAULT_AVATAR : result.user.photoURL
                 });
+                isWaiting.value = false;
                 await navigateTo('/')
             } catch (e) {
                 if (e instanceof FirebaseError) {
@@ -82,6 +90,7 @@ export default {
             visible,
             errorEmail, errorPw,
             errEmailMsg, errPwMsg,
+            isWaiting,
             signIn,
         }
     }
