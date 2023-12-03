@@ -35,7 +35,11 @@
 
             <v-container class="d-flex align-center justify-center">
                 <v-btn color="success" width="180" class="text-h6" @click="signUp">
-                    サインアップ
+                    <div v-show="isWaiting">
+                        <v-progress-circular color="white" indeterminate size="22.5">
+                        </v-progress-circular>
+                    </div>
+                    <div v-show="!isWaiting">サインアップ</div>
                 </v-btn>
             </v-container>
         </v-container>
@@ -64,6 +68,7 @@ export default {
         const errCheckbox = ref('');
         const checked = ref(false);
         const [user, setUser] = useUserData();
+        const isWaiting = ref(false);
 
         const signUp = async () => {
             if (email.value === '' || !email.value.includes('@')) {
@@ -77,8 +82,11 @@ export default {
                     errorChecked.value = true;
                     errCheckbox.value = '利用条件チェックしてください'
                 }
+                isWaiting.value = false;
                 return
             }
+
+            isWaiting.value = true;
             try {
                 const runtimeConfig = useRuntimeConfig();
                 const app = useFirebaseApp(runtimeConfig);
@@ -95,6 +103,7 @@ export default {
                     console.log(e);
                 }
                 await navigateTo('/');
+                isWaiting.value = false;
             } catch (e) {
                 if (e instanceof FirebaseError) {
                     console.log(e)
@@ -105,7 +114,7 @@ export default {
         return {
             email,
             password,
-            checked,
+            checked, isWaiting,
             visible,
             errorEmail, errorPw,
             errEmailMsg, errPwMsg,

@@ -51,7 +51,7 @@
         </v-list-item>
         <v-divider thickness="2"></v-divider>
 
-        <v-list-item v-for="(item, index) in menu" :key="index">
+        <v-list-item v-for="(item, index) in menu" :key="index" v-on:click="item.icon === 'mdi-logout' ? logOut() : () => {}">
           <template v-slot:prepend>
             <v-icon :icon="item.icon"></v-icon>
           </template>
@@ -65,6 +65,10 @@
 <script>
 import { ref } from 'vue';
 import useUserData from '~/composables/states';
+import { DEFAULT_AVATAR } from '~/utils/common/constant';
+import { getAuth, signOut } from 'firebase/auth';
+import useFirebaseApp from '~/composables/firebase.config';
+
 export default {
   name: "Topbar",
 
@@ -95,13 +99,31 @@ export default {
       arrowIcon.value = arrowIcon.value === "mdi-menu-down" ? "mdi-menu-up" : "mdi-menu-down";
     }
 
+    const logOut = async () => {
+      const runtimeConfig = useRuntimeConfig();
+      const app = useFirebaseApp(runtimeConfig);
+      const auth = getAuth(app);
+      try {
+        await signOut(auth);
+        await navigateTo('/sign-in');
+      } catch (e) {
+        console.log(`sign out exception: ${e}`);
+      }
+      setUser({
+        displayName: '',
+        email: '',
+        photoURL: DEFAULT_AVATAR,
+      })
+    }
+
     return {
       items,
       menu,
       user,
       arrowIcon,
       changeIcon,
-      showNotification
+      showNotification,
+      logOut,
     }
   }
 };
