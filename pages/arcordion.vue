@@ -16,34 +16,68 @@
 
         <v-main>
             <v-container class="py-8 px-6">
-                <v-table style="overflow:unset;">
+                <!-- <v-table style="overflow:unset;">
                     <thead>
                         <tr>
-                            <th>
-                                履歴ID
-                            </th>
-                            <th>
-                                ASIN
-                            </th>
-                            <th>
-                                登録日時
-                            </th>
-                            <th>
-                                更新日時
-                            </th>
-                            <th>
-                                ステータス
-                            </th>
-                            <th>
-                                データ
-                            </th>
-                            <th>
-                                再実行
-                            </th>
+                            <th>履歴ID</th>
+                            <th>ASIN</th>
+                            <th>登録日時</th>
+                            <th>更新日時</th>
+                            <th>ステータス</th>
+                            <th>データ</th>
                         </tr>
                     </thead>
-                </v-table>
-            </v-container>    
+                    <tbody>
+                        <tr v-for="item in data" :key="item.id">
+                            <td>{{ item.id }}</td>
+                            <td>{{ item.asin }}</td>
+                            <td>{{ item.register }}</td>
+                            <td>{{ item.updated }}</td>
+                            <td>{{ item.status }}</td>
+                            <td>{{ item.data_file }}</td>
+                        </tr>
+                    </tbody>
+                </v-table> -->
+
+                <v-data-table 
+                    v-model:expanded="expanded" 
+                    :headers="headers" 
+                    :items="data" 
+                    item-value="name"
+                    :item-class="row_classes"
+                    show-expand
+                    single-expand
+                >
+                    <template v-slot:top>
+                        <v-toolbar flat>
+                            <v-toolbar-title>Amazonレビューウオッチャー任意実行模倣</v-toolbar-title>
+                        </v-toolbar>
+                    </template>
+
+                    <!-- <template v-slot:item="{index, item}">
+                        <tr style="index % 2 !== 0 ? background-color: #ADD8E6 ;">
+                            <td> {{ item.id }} 回目</td>
+                            <td>{{ item.id }}</td>
+                            <td>{{ item.register }}</td>
+                            <td>{{ item.updated }}</td>
+                            <td>{{ item.status }}</td>
+                            <td>{{ item.data_file }}</td>
+                        </tr>
+                    </template> -->
+
+                    <template v-slot:expanded-row="{ item }">
+                        <tr v-for="(retryItem, index) in item.retry">
+                            <td> {{ index + 1 }} 回目</td>
+                            <td>{{ retryItem.asin }}</td>
+                            <td>{{ retryItem.register }}</td>
+                            <td>{{ retryItem.updated }}</td>
+                            <td>{{ retryItem.status }}</td>
+                            <td>{{ retryItem.data_file }}</td>
+                        </tr>
+                    </template>
+                    <template v-slot:bottom></template>
+                </v-data-table>
+            </v-container>
         </v-main>
     </v-app>
 </template>
@@ -52,18 +86,120 @@
 import { links } from '../utils/common/constant';
 export default {
     name: "Arcordion",
-    setup(){
+    setup() {
         const drawer = ref(false);
 
         const handleDrawer = () => drawer.value = !drawer.value;
 
-        return {
-            drawer, handleDrawer, 
+        const data = [
+            {
+                id: "123456ABCD",
+                asin: "123456ABCD",
+                register: "2023-12-03",
+                updated: "2023-12-06",
+                status: 203,
+                data_file: true,
+                retry: [
+                    {
+                        id: "123456ABCD-1",
+                        asin: "123456ABCD",
+                        register: "2023-12-03",
+                        updated: "2023-12-06",
+                        status: 203,
+                        data_file: true,
+                    },
+                    {
+                        id: "123456ABCD-2",
+                        asin: "123456ABCD",
+                        register: "2023-12-03",
+                        updated: "2023-12-06",
+                        status: 203,
+                        data_file: true,
+                    },
+                ],
+            },
+            {
+                id: "123456ABCE",
+                asin: "123456ABCE",
+                register: "2023-12-03",
+                updated: "2023-12-06",
+                status: 203,
+                data_file: false,
+                retry: [],
+            },
+            {
+                id: "123456ABCF",
+                asin: "123456ABCF",
+                register: "2023-12-03",
+                updated: "2023-12-06",
+                status: 203,
+                data_file: true,
+                retry: [],
+            },
+            {
+                id: "123456ABCG",
+                asin: "123456ABCF",
+                register: "2023-12-03",
+                updated: "2023-12-06",
+                status: 203,
+                data_file: false,
+                retry: [
+                    {
+                        id: "123456ABCG-1",
+                        asin: "123456ABCF",
+                        register: "2023-12-03",
+                        updated: "2023-12-06",
+                        status: 203,
+                        data_file: false,
+                    },
+                    {
+                        id: "123456ABCG-2",
+                        asin: "123456ABCF",
+                        register: "2023-12-03",
+                        updated: "2023-12-06",
+                        status: 203,
+                        data_file: false,
+                    },
+                    {
+                        id: "123456ABCG-3",
+                        asin: "123456ABCF",
+                        register: "2023-12-03",
+                        updated: "2023-12-06",
+                        status: 203,
+                        data_file: false,
+                    }
+                ],
+            },
+        ];
 
+        const expanded = ref([]);
+
+        const headers = ref([
+            { title: '履歴ID', align: 'start', key: 'id', sortable: false },
+            { title: 'ASIN', key: 'asin', sortable: false },
+            { title: '登録日時', key: 'register', sortable: false },
+            { title: '更新日時 ', key: 'updated', sortable: false },
+            { title: 'ステータス', key: 'status', sortable: false },
+            { title: 'ダウロード', key: 'data_file', sortable: false },
+        ]);
+
+        return {
+            drawer, handleDrawer,
+            links, data,
+            expanded, headers, 
         }
     }
 }
 
 </script>
 
-<style></style>
+<style>
+.even-row {
+    background-color: #ADD8E6;
+}
+
+.odd-row {
+    background-color: white;
+}   
+
+</style>

@@ -20,8 +20,15 @@
                     <v-col>
                         <p class="text-h6 mb-2">食品名</p>
 
-                        <v-select :items="items" label="食品名を選んで下さい" item-title="name" item-value="name" v-model="foodValue"
-                            :error="foodErr" :errorMessages="foodErrMsg">
+                        <v-select 
+                            :items="items" 
+                            label="食品名を選んで下さい" 
+                            item-title="name" 
+                            item-value="name" 
+                            v-model="foodValue"
+                            :error="foodErr" 
+                            :errorMessages="foodErrMsg"
+                        >
                             <template #selection="{ item }">
                                 <span>{{ item.raw.name }}</span>
                             </template>
@@ -29,7 +36,8 @@
                                 <v-list-item v-bind="props">
                                     <template #title>
                                         <span class="select-item">
-                                            <img :src="item.raw.image" height="50" width="100" /> {{ item.raw.name }}
+                                            <img :src="item.raw.image" height="50" width="100" /> 
+                                            {{ item.raw.name }}
                                         </span>
                                     </template>
                                 </v-list-item>
