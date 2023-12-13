@@ -68,7 +68,7 @@
 
                     <template v-slot:expanded-row="{ item }">
                         <tr :class="getEvenOddClass(index)" v-for="(retryItem, index) in item.retry" :key="index">
-                            <td> </td>
+                            <td> {{ index + 2 }} 回目</td>
                             <td>{{ retryItem.asin }}</td>
                             <td>{{ retryItem.register }}</td>
                             <td>{{ retryItem.updated }}</td>
