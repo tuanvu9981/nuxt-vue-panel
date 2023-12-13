@@ -40,13 +40,11 @@
                 </v-table> -->
 
                 <v-data-table 
-                    v-model:expanded="expanded" 
+                    :expanded="expanded" 
                     :headers="headers" 
                     :items="data" 
-                    item-value="name"
-                    :item-class="row_classes"
+                    item-key="id"
                     show-expand
-                    single-expand
                 >
                     <template v-slot:top>
                         <v-toolbar flat>
@@ -54,20 +52,23 @@
                         </v-toolbar>
                     </template>
 
-                    <!-- <template v-slot:item="{index, item}">
-                        <tr style="index % 2 !== 0 ? background-color: #ADD8E6 ;">
-                            <td> {{ item.id }} 回目</td>
-                            <td>{{ item.id }}</td>
-                            <td>{{ item.register }}</td>
-                            <td>{{ item.updated }}</td>
-                            <td>{{ item.status }}</td>
-                            <td>{{ item.data_file }}</td>
+                    <!-- <template v-slot:item="{index, item, isExpanded, expand}">
+                        <tr
+
+                        :class="getEvenOddClass(index)"
+                        >
+                            <td> {{ item.id }} </td>
+                            <td> {{ item.asin }} </td>
+                            <td> {{ item.register }} </td>
+                            <td> {{ item.updated }} </td>
+                            <td> {{ item.status }} </td>
+                            <td> {{ item.data_file }} </td>
                         </tr>
                     </template> -->
 
                     <template v-slot:expanded-row="{ item }">
-                        <tr v-for="(retryItem, index) in item.retry">
-                            <td> {{ index + 1 }} 回目</td>
+                        <tr :class="getEvenOddClass(index)" v-for="(retryItem, index) in item.retry" :key="index">
+                            <td> </td>
                             <td>{{ retryItem.asin }}</td>
                             <td>{{ retryItem.register }}</td>
                             <td>{{ retryItem.updated }}</td>
@@ -174,6 +175,23 @@ export default {
 
         const expanded = ref([]);
 
+        const getEvenOddClass = (index) => index%2 === 0 ? "even-row" : "odd-row";
+
+        const clickedRow = (value) => {
+            console.log("1")
+            console.log(expanded.value)
+            console.log(value)
+            if (expanded.value.length && expanded.value[0].id == value.id) {
+                expanded.value = [];
+            } else {
+                expanded.value = [];
+                expanded.value.push(value);
+            }
+            console.log("2")
+            console.log(expanded.value)
+            console.log(value)
+        }
+
         const headers = ref([
             { title: '履歴ID', align: 'start', key: 'id', sortable: false },
             { title: 'ASIN', key: 'asin', sortable: false },
@@ -187,6 +205,7 @@ export default {
             drawer, handleDrawer,
             links, data,
             expanded, headers, 
+            getEvenOddClass, clickedRow
         }
     }
 }
